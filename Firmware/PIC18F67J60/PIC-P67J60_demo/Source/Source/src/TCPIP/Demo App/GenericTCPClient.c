@@ -63,7 +63,7 @@
 
 // Defines the server to be accessed for this application
 //static BYTE ServerName[] =	"www.google.com";
-static BYTE ServerName[] =	"192.168.1.157";
+//static BYTE ServerName[] =	"192.168.1.157";
 
 // Defines the port to be accessed for this application
 //static WORD ServerPort = 80;
@@ -100,7 +100,7 @@ static ROM BYTE RemoteURL[] = "/search?as_q=Microchip&as_sitesearch=microchip.co
   Returns:
   	None
   ***************************************************************************/
-void GenericTCPClient(char* newMessage)
+void GenericTCPClient(char* newMessage, BYTE* ServerName)
 {
 	BYTE 				i;
 	WORD				w;

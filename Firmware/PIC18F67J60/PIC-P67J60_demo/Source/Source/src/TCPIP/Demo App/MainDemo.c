@@ -325,7 +325,8 @@ int main(void)
     // down into smaller pieces so that other tasks can have CPU time.
     while(1)
     {
-        char MessageToSend [] = "This is finally a message";
+        char MessageToSend [] = "This is finally a medssage";
+        BYTE serverIP [] = "192.168.1.157";
 	#if defined(WF_USE_POWER_SAVE_FUNCTIONS)
 		if (!psConfDone && WFisConnected()) {	
 			PsPollEnabled = (MY_DEFAULT_PS_POLL == WF_ENABLED);
@@ -379,7 +380,7 @@ int main(void)
 		// go here.
         
 		#if defined(STACK_USE_GENERIC_TCP_CLIENT_EXAMPLE)
-		GenericTCPClient(MessageToSend);
+		GenericTCPClient(MessageToSend, serverIP);
 		#endif
 		
 		#if defined(STACK_USE_GENERIC_TCP_SERVER_EXAMPLE)

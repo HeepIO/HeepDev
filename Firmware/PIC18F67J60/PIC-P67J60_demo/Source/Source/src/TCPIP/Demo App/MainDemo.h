@@ -69,7 +69,7 @@ void SMTPDemo(void);
 void PingDemo(void);
 void SNMPTrapDemo(void);
 void SNMPV2TrapDemo(void);
-void GenericTCPClient(char* message);
+void GenericTCPClient(char* message, BYTE* ServerName);
 void GenericTCPServer(void);
 void BerkeleyTCPClientDemo(void);
 void BerkeleyTCPServerDemo(void);
