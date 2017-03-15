@@ -1,0 +1,1271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="62">
+  <logicalFolder name="root" displayName="root" projectFiles="true">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <logicalFolder name="Common" displayName="Common" projectFiles="true">
+        <itemPath>../../../Microchip/Include/Compiler.h</itemPath>
+        <itemPath>../../../Microchip/Include/GenericTypeDefs.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f3" displayName="Crypto" projectFiles="true">
+        <itemPath>../../../Microchip/Include/Crypto/AES.h</itemPath>
+        <itemPath>../../../Microchip/Include/Crypto/AES_CBC.h</itemPath>
+        <itemPath>../../../Microchip/Include/Crypto/AES_CFB.h</itemPath>
+        <itemPath>../../../Microchip/Include/Crypto/AES_CTR.h</itemPath>
+        <itemPath>../../../Microchip/Include/Crypto/AES_ECB.h</itemPath>
+        <itemPath>../../../Microchip/Include/Crypto/AES_ECB_PIC32.h</itemPath>
+        <itemPath>../../../Microchip/Include/Crypto/AES_OFB.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f1" displayName="HW Config" projectFiles="true">
+        <itemPath>../Configs/HWP OLIMEX_P67J60.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f2" displayName="TCPIP Config" projectFiles="true">
+        <itemPath>../Configs/TCPIP OLIMEX_P67J60.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="TCPIP Stack" displayName="TCPIP Stack" projectFiles="true">
+        <itemPath>../../../Microchip/Include/TCPIP Stack/ARCFOUR.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/ARP.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/Announce.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/AutoIP.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/BerkeleyAPI.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/BigInt.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/DHCP.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/DNS.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/Delay.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/DynDNS.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/ENC28J60.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/ENCX24J600.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/ETH97J60.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/ETHPIC32ExtPhy.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/ETHPIC32ExtPhyDP83640.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/ETHPIC32ExtPhyDP83848.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/ETHPIC32ExtPhyRegs.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/ETHPIC32ExtPhySMSC8700.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/ETHPIC32ExtPhySMSC8720.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/FTP.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/FileSystem.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/HTTP2.h</itemPath>
+        <itemPath>../HTTPPrint.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/Hashes.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/Helpers.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/ICMP.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/IP.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/LCDBlocking.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/MAC.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/MPFS2.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/NBNS.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/RSA.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/Random.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/Reboot.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/SMTP.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/SNMP.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/SNMPv3.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/SNTP.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/SPIFlash.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/SPIRAM.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/SSL.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/StackTsk.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/TCP.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/TCPIP.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/TCPPerformanceTest.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/TFTPc.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/Telnet.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/Tick.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/UART.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/UART2TCPBridge.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/UDP.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/UDPPerformanceTest.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/WFApi.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/WFConsole.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/WFConsoleIfconfig.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/WFConsoleIwconfig.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/WFConsoleIwpriv.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/WFConsoleMsgHandler.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/WFConsoleMsgs.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/WFDriverPrv.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/WFEasyConfig.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/WFMac.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/WFMgmtMsg.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/WFRaw.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/XEEPROM.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/ZeroconfHelper.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/ZeroconfLinkLocal.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/ZeroconfMulticastDNS.h</itemPath>
+        <itemPath>../mib.h</itemPath>
+        <itemPath>../../../Microchip/Include/TCPIP Stack/regdef.h</itemPath>
+      </logicalFolder>
+      <itemPath>../HardwareProfile.h</itemPath>
+      <itemPath>../MainDemo.h</itemPath>
+      <itemPath>../TCPIPConfig.h</itemPath>
+      <itemPath>../WF_Config.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="LibraryFiles"
+                   displayName="Library Files"
+                   projectFiles="true">
+      <itemPath>../../../Microchip/TCPIP Stack/BigInt_helper_coff.a</itemPath>
+      <itemPath>../../../Microchip/TCPIP Stack/BigInt_helper_elf.a</itemPath>
+    </logicalFolder>
+    <logicalFolder name="LinkerScript"
+                   displayName="Linker Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="ObjectFiles"
+                   displayName="Object Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <logicalFolder name="Examples" displayName="Examples" projectFiles="true">
+        <itemPath>../BerkeleyTCPClientDemo.c</itemPath>
+        <itemPath>../BerkeleyTCPServerDemo.c</itemPath>
+        <itemPath>../BerkeleyUDPClientDemo.c</itemPath>
+        <itemPath>../GenericTCPClient.c</itemPath>
+        <itemPath>../GenericTCPServer.c</itemPath>
+        <itemPath>../PingDemo.c</itemPath>
+        <itemPath>../SMTPDemo.c</itemPath>
+        <itemPath>../UARTConfig.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="TCPIP Stack" displayName="TCPIP Stack" projectFiles="true">
+        <itemPath>../../../Microchip/TCPIP Stack/ARCFOUR.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/ARP.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/Announce.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/AutoIP.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/BerkeleyAPI.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/BigInt.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/BigInt_helper_C32.S</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/DHCP.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/DHCPs.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/DNS.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/DNSs.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/Delay.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/DynDNS.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/ENC28J60.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/ENCX24J600.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/ETH97J60.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/ETHPIC32ExtPhy.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/ETHPIC32ExtPhyDP83848.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/ETHPIC32IntMac.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/FTP.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/FileSystem.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/HTTP2.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/Hashes.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/Helpers.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/ICMP.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/IP.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/LCDBlocking.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/MPFS2.c</itemPath>
+        <itemPath>../MPFSImg2.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/NBNS.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/RSA.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/Random.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/Reboot.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/SMTP.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/SNMP.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/SNMPv3.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/SNMPv3USM.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/SNTP.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/SPIEEPROM.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/SPIFlash.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/SPIRAM.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/SSL.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/StackTsk.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/TCP.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/TCPPerformanceTest.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/TFTPc.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/Telnet.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/Tick.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/UART.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/UART2TCPBridge.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/UDP.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/UDPPerformanceTest.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/ZeroconfHelper.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/ZeroconfLinkLocal.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/ZeroconfMulticastDNS.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="Wi-Fi" displayName="Wi-Fi" projectFiles="true">
+        <itemPath>../../../Microchip/TCPIP Stack/WiFi/WFConnectionAlgorithm.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/WiFi/WFConnectionManager.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/WiFi/WFConnectionProfile.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/WiFi/WFConsole.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/WiFi/WFConsoleIfconfig.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/WiFi/WFConsoleIwconfig.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/WiFi/WFConsoleIwpriv.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/WiFi/WFConsoleMsgHandler.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/WiFi/WFConsoleMsgs.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/WiFi/WFDataTxRx.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/WiFi/WFDriverCom.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/WiFi/WFDriverRaw.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/WiFi/WFEasyConfig.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/WiFi/WFEventHandler.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/WiFi/WFInit.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/WiFi/WFMac.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/WiFi/WFMgmtMsg.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/WiFi/WFParamMsg.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/WiFi/WFPowerSave.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/WiFi/WFScan.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/WiFi/WFTxPower.c</itemPath>
+        <itemPath>../WF_Config.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/WiFi/WF_Eint.c</itemPath>
+        <itemPath>../../../Microchip/TCPIP Stack/WiFi/WF_Spi.c</itemPath>
+      </logicalFolder>
+      <itemPath>../CustomHTTPApp.c</itemPath>
+      <itemPath>../CustomSNMPApp.c</itemPath>
+      <itemPath>../CustomSSLCert.c</itemPath>
+      <itemPath>../MainDemo.c</itemPath>
+      <itemPath>../olimex-ext-test.c</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder name="OtherFiles" displayName="Other Files" projectFiles="false">
+      <itemPath>../../../Microchip/TCPIP Stack/TCPIP Stack Version.txt</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="C18-PICDN2_OLIMEX_P67J70" type="2">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <targetDevice>PIC18F67J60</targetDevice>
+        <targetHeader></targetHeader>
+        <targetPluginBoard></targetPluginBoard>
+        <platformTool>PICkit3PlatformTool</platformTool>
+        <languageToolchain>C18</languageToolchain>
+        <languageToolchainVersion>3.47</languageToolchainVersion>
+        <platform>3</platform>
+      </toolsSet>
+      <compileType>
+        <linkerTool>
+          <linkerLibItems>
+          </linkerLibItems>
+        </linkerTool>
+        <archiverTool>
+        </archiverTool>
+        <loading>
+          <useAlternateLoadableFile>false</useAlternateLoadableFile>
+          <parseOnProdLoad>false</parseOnProdLoad>
+          <alternateLoadableFile></alternateLoadableFile>
+        </loading>
+        <subordinates>
+        </subordinates>
+      </compileType>
+      <makeCustomizationType>
+        <makeCustomizationPreStepEnabled>false</makeCustomizationPreStepEnabled>
+        <makeCustomizationPreStep></makeCustomizationPreStep>
+        <makeCustomizationPostStepEnabled>false</makeCustomizationPostStepEnabled>
+        <makeCustomizationPostStep></makeCustomizationPostStep>
+        <makeCustomizationPutChecksumInUserID>false</makeCustomizationPutChecksumInUserID>
+        <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>
+        <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
+      </makeCustomizationType>
+      <item path="../../../Microchip/Include/Crypto/AES.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/Crypto/AES_CBC.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/Crypto/AES_CFB.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/Crypto/AES_CTR.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/Crypto/AES_ECB.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/Crypto/AES_ECB_PIC32.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/Crypto/AES_OFB.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/ARCFOUR.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/BigInt.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/ETHPIC32ExtPhy.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/ETHPIC32ExtPhyDP83640.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/ETHPIC32ExtPhyDP83848.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/ETHPIC32ExtPhyRegs.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/ETHPIC32ExtPhySMSC8700.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/ETHPIC32ExtPhySMSC8720.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/FileSystem.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/RSA.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/Random.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/SNMPv3.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/SSL.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/WFApi.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/WFConsole.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/WFConsoleIfconfig.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/WFConsoleIwconfig.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/WFConsoleIwpriv.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/WFConsoleMsgHandler.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/WFConsoleMsgs.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/WFDriverPrv.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/WFEasyConfig.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/WFMac.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/WFMgmtMsg.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/WFRaw.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/ZeroconfHelper.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/ZeroconfLinkLocal.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/ZeroconfMulticastDNS.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/Include/TCPIP Stack/regdef.h"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/ARCFOUR.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/BigInt.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/BigInt_helper_C32.S"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/BigInt_helper_coff.a"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/BigInt_helper_elf.a"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/ETHPIC32ExtPhy.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/ETHPIC32ExtPhyDP83848.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/ETHPIC32IntMac.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/FileSystem.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/RSA.c" ex="true" overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/Random.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/SNMPv3.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/SNMPv3USM.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/SSL.c" ex="true" overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/WiFi/WFConnectionAlgorithm.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/WiFi/WFConnectionManager.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/WiFi/WFConnectionProfile.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/WiFi/WFConsole.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/WiFi/WFConsoleIfconfig.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/WiFi/WFConsoleIwconfig.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/WiFi/WFConsoleIwpriv.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/WiFi/WFConsoleMsgHandler.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/WiFi/WFConsoleMsgs.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/WiFi/WFDataTxRx.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/WiFi/WFDriverCom.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/WiFi/WFDriverRaw.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/WiFi/WFEasyConfig.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/WiFi/WFEventHandler.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/WiFi/WFInit.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/WiFi/WFMac.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/WiFi/WFMgmtMsg.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/WiFi/WFParamMsg.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/WiFi/WFPowerSave.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/WiFi/WFScan.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/WiFi/WFTxPower.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/WiFi/WF_Eint.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../../../Microchip/TCPIP Stack/WiFi/WF_Spi.c"
+            ex="true"
+            overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../CustomSSLCert.c" ex="true" overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../MPFSImg2.c" ex="true" overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../WF_Config.c" ex="true" overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <item path="../WF_Config.h" ex="true" overriding="false">
+        <C18>
+        </C18>
+        <C18-AS>
+        </C18-AS>
+        <C18-LD>
+        </C18-LD>
+        <C18LanguageToolchain>
+        </C18LanguageToolchain>
+      </item>
+      <C18>
+        <property key="code-model" value="ml"/>
+        <property key="data-model" value="oa-"/>
+        <property key="default-char-unsigned" value="true"/>
+        <property key="enable-all-optimizations" value="true"/>
+        <property key="enable-int-promotion" value="false"/>
+        <property key="enable-multi-bank-stack-model" value="true"/>
+        <property key="enable-ob" value="false"/>
+        <property key="enable-od" value="false"/>
+        <property key="enable-om" value="true"/>
+        <property key="enable-on" value="true"/>
+        <property key="enable-op" value="false"/>
+        <property key="enable-opa" value="false"/>
+        <property key="enable-or" value="false"/>
+        <property key="enable-os" value="true"/>
+        <property key="enable-ot" value="false"/>
+        <property key="enable-ou" value="false"/>
+        <property key="enable-ow" value="true"/>
+        <property key="extra-include-directories"
+                  value="..;../../Microchip/Include;../../../Microchip/Include;../../../Microchip/Include/TCPIP Stack;../Configs"/>
+        <property key="optimization-master" value="Enable all"/>
+        <property key="preprocessor-macros"
+                  value="CFG_INCLUDE_OLIMEX_P67J60;STACK_USE_GENERIC_TCP_CLIENT_EXAMPLE"/>
+        <property key="procedural-abstraction-passes" value="0"/>
+        <property key="storage-class" value="sco"/>
+        <property key="verbose" value="false"/>
+        <property key="warning-level" value="2"/>
+      </C18>
+      <C18-AS>
+        <property key="cross.reference.file" value=""/>
+        <property key="default.radix" value="HEX"/>
+        <property key="enable.case.sensitivity" value="false"/>
+        <property key="hex.output.format" value="INHX32"/>
+        <property key="preprocessor.macros" value=""/>
+        <property key="warning.level" value="0"/>
+      </C18-AS>
+      <C18-LD>
+        <property key="cod-file" value="false"/>
+        <property key="extra-lib-directories" value=".."/>
+        <property key="hex-output-format" value="INHX32"/>
+        <property key="map-file" value=""/>
+      </C18-LD>
+      <C18LanguageToolchain>
+        <property key="extended-mode" value="false"/>
+        <property key="extended-mode-mcc18" value="false"/>
+        <property key="extended-mode-mpasm" value="false"/>
+        <property key="extended-mode-mplink" value="false"/>
+        <property key="stack-analysis" value="false"/>
+        <property key="stack-analysis-mcc18" value="false"/>
+        <property key="stack-analysis-mplink" value="false"/>
+      </C18LanguageToolchain>
+      <PICkit3PlatformTool>
+        <property key="AutoSelectMemRanges" value="auto"/>
+        <property key="Freeze Peripherals" value="true"/>
+        <property key="SecureSegment.SegmentProgramming" value="FullChipProgramming"/>
+        <property key="ToolFirmwareFilePath"
+                  value="Press to browse for a specific firmware version"/>
+        <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
+        <property key="hwtoolclock.frcindebug" value="false"/>
+        <property key="memories.aux" value="false"/>
+        <property key="memories.bootflash" value="true"/>
+        <property key="memories.configurationmemory" value="true"/>
+        <property key="memories.configurationmemory2" value="true"/>
+        <property key="memories.dataflash" value="true"/>
+        <property key="memories.eeprom" value="false"/>
+        <property key="memories.flashdata" value="true"/>
+        <property key="memories.id" value="false"/>
+        <property key="memories.instruction.ram" value="true"/>
+        <property key="memories.instruction.ram.ranges"
+                  value="${memories.instruction.ram.ranges}"/>
+        <property key="memories.programmemory" value="true"/>
+        <property key="memories.programmemory.ranges" value="0-1fff7"/>
+        <property key="poweroptions.powerenable" value="true"/>
+        <property key="programmertogo.imagename" value=""/>
+        <property key="programoptions.donoteraseauxmem" value="false"/>
+        <property key="programoptions.eraseb4program" value="true"/>
+        <property key="programoptions.pgmspeed" value="2"/>
+        <property key="programoptions.preservedataflash" value="false"/>
+        <property key="programoptions.preservedataflash.ranges"
+                  value="${programoptions.preservedataflash.ranges}"/>
+        <property key="programoptions.preserveeeprom" value="false"/>
+        <property key="programoptions.preserveeeprom.ranges" value=""/>
+        <property key="programoptions.preserveprogram.ranges" value=""/>
+        <property key="programoptions.preserveprogramrange" value="false"/>
+        <property key="programoptions.preserveuserid" value="false"/>
+        <property key="programoptions.programcalmem" value="false"/>
+        <property key="programoptions.programuserotp" value="false"/>
+        <property key="programoptions.testmodeentrymethod" value="VDDFirst"/>
+        <property key="programoptions.usehighvoltageonmclr" value="false"/>
+        <property key="programoptions.uselvpprogramming" value="false"/>
+        <property key="voltagevalue" value="3.25"/>
+      </PICkit3PlatformTool>
+    </conf>
+  </confs>
+</configurationDescriptor>
