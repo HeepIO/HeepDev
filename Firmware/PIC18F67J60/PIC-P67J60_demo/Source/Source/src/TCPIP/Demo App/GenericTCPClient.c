@@ -116,8 +116,6 @@ void GenericTCPClient(char* newMessage, BYTE* ServerName)
 		SM_DONE
 	} GenericTCPExampleState = SM_DONE;
 
-    char message [] = "This is message";
-    
 	switch(GenericTCPExampleState)
 	{
 		case SM_HOME:
