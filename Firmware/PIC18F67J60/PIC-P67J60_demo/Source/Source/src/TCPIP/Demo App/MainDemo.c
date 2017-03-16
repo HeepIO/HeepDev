@@ -317,7 +317,7 @@ int main(void)
 		// go here.
         
 		#if defined(STACK_USE_GENERIC_TCP_CLIENT_EXAMPLE)
-		GenericTCPClient(MessageToSend, serverIP);
+		SendTCPMessageToIP(MessageToSend, serverIP);
 		#endif
 		
 		#if defined(STACK_USE_GENERIC_TCP_SERVER_EXAMPLE)

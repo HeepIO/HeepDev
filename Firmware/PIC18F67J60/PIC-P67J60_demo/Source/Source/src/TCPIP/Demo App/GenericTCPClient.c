@@ -100,7 +100,7 @@ static ROM BYTE RemoteURL[] = "/search?as_q=Microchip&as_sitesearch=microchip.co
   Returns:
   	None
   ***************************************************************************/
-void GenericTCPClient(char* newMessage, BYTE* ServerName)
+void SendTCPMessageToIP(char* newMessage, BYTE* ServerName)
 {
 	BYTE 				i;
 	WORD				w;
