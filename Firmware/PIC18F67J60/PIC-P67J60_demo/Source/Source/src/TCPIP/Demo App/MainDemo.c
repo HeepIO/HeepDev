@@ -185,6 +185,15 @@ int main(void)
 	// Initialize application specific hardware
 	//InitializeBoard();
 
+    LED0_TRIS = 0;
+	LED1_TRIS = 0;
+	LED2_TRIS = 0;
+	LED3_TRIS = 0;
+	LED4_TRIS = 0;
+	LED5_TRIS = 0;
+	LED6_TRIS = 0;
+	LED7_TRIS = 0;
+	LED_PUT(0x00);
     
     OSCTUNE = 0x40;
 
@@ -204,16 +213,7 @@ int main(void)
     INTCONbits.GIEL = 1;
 
     
-    
-    
-	#if defined(USE_LCD)
-	// Initialize and display the stack version on the LCD
-	LCDInit();
-	DelayMs(100);
-	strcpypgm2ram((char*)LCDText, "TCPStack " TCPIP_STACK_VERSION "  "
-		"                ");
-	LCDUpdate();
-	#endif
+
 
 	// Initialize stack-related hardware components that may be 
 	// required by the UART configuration routines
@@ -227,11 +227,6 @@ int main(void)
 	// Initialize Stack and application related NV variables into AppConfig.
 	InitAppConfig();
     
-//    while(1)
-//    {
-//        GenericTCPClient();
-//    }
-
     // Initiates board setup process if button is depressed 
 	// on startup
     if(BUTTON0_IO == 0u)
@@ -279,37 +274,12 @@ int main(void)
 	// application modules (HTTP, SNMP, etc.)
     StackInit();
 
-    #if defined(WF_CS_TRIS)
-    WF_Connect();
-    #endif
-
 	// Initialize any application-specific modules or functions/
 	// For this demo application, this only includes the
 	// UART 2 TCP Bridge
 	#if defined(STACK_USE_UART2TCP_BRIDGE)
 	UART2TCPBridgeInit();
 	#endif
-
-	#if defined(STACK_USE_ZEROCONF_LINK_LOCAL)
-    ZeroconfLLInitialize();
-	#endif
-
-	#if defined(STACK_USE_ZEROCONF_MDNS_SD)
-	mDNSInitialize(MY_DEFAULT_HOST_NAME);
-	mDNSServiceRegister(
-		(const char *) "DemoWebServer",	// base name of the service
-		"_http._tcp.local",			    // type of the service
-		80,				                // TCP or UDP port, at which this service is available
-		((const BYTE *)"path=/index.htm"),	// TXT info
-		1,								    // auto rename the service when if needed
-		NULL,							    // no callback function
-		NULL							    // no application context
-		);
-
-    mDNSMulticastFilterRegister();			
-	#endif
-    
-    
         
 	// Now that all items are initialized, begin the co-operative
 	// multitasking loop.  This infinite loop will continuously 
