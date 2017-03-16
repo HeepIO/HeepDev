@@ -92,7 +92,6 @@ BYTE AN0String[8];
 // These may or may not be present in all applications.
 static void InitAppConfig(void);
 void InitializeBoard(void);
-static void ProcessIO(void);
 extern void InterruptHandlerHigh (void);
 
 #if defined(WF_CS_TRIS)
@@ -327,25 +326,6 @@ int main(void)
     {
         char MessageToSend [] = "This is finally a medssage";
         BYTE serverIP [] = "192.168.1.157";
-	#if defined(WF_USE_POWER_SAVE_FUNCTIONS)
-		if (!psConfDone && WFisConnected()) {	
-			PsPollEnabled = (MY_DEFAULT_PS_POLL == WF_ENABLED);
-			if (!PsPollEnabled) {	 
-				/* disable low power (PS-Poll) mode */
-				#if defined(STACK_USE_UART)
-				putrsUART("Disable PS-Poll\r\n");		 
-				#endif
-				WF_PsPollDisable();
-			} else {
-				/* Enable low power (PS-Poll) mode */
-				#if defined(STACK_USE_UART)
-				putrsUART("Enable PS-Poll\r\n");		
-				#endif
-				WF_PsPollEnable(TRUE);
-			}	
-			psConfDone = TRUE;
-		}
-	#endif
         // Blink LED0 (right most one) every second.
         if(TickGet() - t >= TICK_SECOND/2ul)
         {
@@ -353,23 +333,10 @@ int main(void)
             LED0_IO ^= 1;
         }
 
-        // This task performs normal stack task including checking
-        // for incoming packet, type of packet and calling
-        // appropriate stack entity to process it.
         StackTask();
 
-        // This tasks invokes each of the core stack application tasks
         StackApplications();
 
-        #if defined(STACK_USE_ZEROCONF_LINK_LOCAL)
-		ZeroconfLLProcess();
-        #endif
-
-        #if defined(STACK_USE_ZEROCONF_MDNS_SD)
-        mDNSProcess();
-		// Use this function to exercise service update function
-		// HTTPUpdateRecord();
-        #endif
 
 		// Process application specific tasks here.
 		// For this demo app, this will include the Generic TCP 
@@ -386,36 +353,6 @@ int main(void)
 		#if defined(STACK_USE_GENERIC_TCP_SERVER_EXAMPLE)
 		GenericTCPServer();
 		#endif
-		
-		#if defined(STACK_USE_SMTP_CLIENT)
-		SMTPDemo();
-		#endif
-		
-		#if defined(STACK_USE_ICMP_CLIENT)
-		PingDemo();
-		#endif
-		
-		#if defined(STACK_USE_SNMP_SERVER) && !defined(SNMP_TRAP_DISABLED)
-		//User should use one of the following SNMP demo
-		// This routine demonstrates V1 or V2 trap formats with one variable binding.
-		SNMPTrapDemo();
-		
-		#if defined(SNMP_STACK_USE_V2_TRAP) || defined(SNMP_V1_V2_TRAP_WITH_SNMPV3)
-		//This routine provides V2 format notifications with multiple (3) variable bindings
-		//User should modify this routine to send v2 trap format notifications with the required varbinds.
-		//SNMPV2TrapDemo();
-		#endif 
-		if(gSendTrapFlag)
-			SNMPSendTrap();
-		#endif
-		
-		#if defined(STACK_USE_BERKELEY_API)
-		BerkeleyTCPClientDemo();
-		BerkeleyTCPServerDemo();
-		BerkeleyUDPClientDemo();
-		#endif
-
-		ProcessIO();
 
         // If the local IP address has changed (ex: due to DHCP lease change)
         // write the new IP address to the LCD display, UART, and Announce 
@@ -445,135 +382,6 @@ int main(void)
 		}
 	}
 }
-
-#if defined(WF_CS_TRIS)
-/*****************************************************************************
- * FUNCTION: WF_Connect
- *
- * RETURNS:  None
- *
- * PARAMS:   None
- *
- *  NOTES:   Connects to an 802.11 network.  Customize this function as needed 
- *           for your application.
- *****************************************************************************/
-static void WF_Connect(void)
-{
-    UINT8 ConnectionProfileID;
-    UINT8 channelList[] = MY_DEFAULT_CHANNEL_LIST;
-    
-    /* create a Connection Profile */
-    WF_CPCreate(&ConnectionProfileID);
-
-    #if defined(STACK_USE_UART)
-    putrsUART("Set SSID (");
-    putsUART(AppConfig.MySSID);
-    putrsUART(")\r\n");
-    #endif
-    WF_CPSetSsid(ConnectionProfileID, 
-                 AppConfig.MySSID, 
-                 AppConfig.SsidLength);
-
-    #if defined(STACK_USE_UART)
-    putrsUART("Set Network Type\r\n");
-	#endif
-    WF_CPSetNetworkType(ConnectionProfileID, MY_DEFAULT_NETWORK_TYPE);
-    
-	#if defined(STACK_USE_UART)
-	putrsUART("Set Scan Type\r\n");
-	#endif
-    WF_CASetScanType(MY_DEFAULT_SCAN_TYPE);
-    
-    #if defined(STACK_USE_UART)
-    putrsUART("Set Channel List\r\n");
-    #endif    
-    WF_CASetChannelList(channelList, sizeof(channelList));
-    
-    #if defined(STACK_USE_UART)
-    putrsUART("Set list retry count\r\n");
-    #endif
-    // The Retry Count parameter tells the WiFi Connection manager how many attempts to make when trying
-    // to connect to an existing network.  In the Infrastructure case, the default is to retry forever so that
-    // if the AP is turned off or out of range, the radio will continue to attempt a connection until the
-    // AP is eventually back on or in range.  In the Adhoc case, the default is to retry 3 times since the 
-    // purpose of attempting to establish a network in the Adhoc case is only to verify that one does not
-    // initially exist.  If the retry count was set to WF_RETRY_FOREVER in the AdHoc mode, an AdHoc network
-    // would never be established.  The constants MY_DEFAULT_LIST_RETRY_COUNT_ADHOC and 
-    // MY_DEFAULT_LIST_RETRY_COUNT_INFRASTRUCTURE have been created specifically for the June 2011 MAL release.
-    #if defined(EZ_CONFIG_STORE)
-        if (AppConfig.networkType == WF_ADHOC)
-            WF_CASetListRetryCount(MY_DEFAULT_LIST_RETRY_COUNT_ADHOC);
-        else
-            WF_CASetListRetryCount(MY_DEFAULT_LIST_RETRY_COUNT_INFRASTRUCTURE);
-    #else
-        #if (MY_DEFAULT_NETWORK_TYPE == WF_ADHOC)
-            WF_CASetListRetryCount(MY_DEFAULT_LIST_RETRY_COUNT_ADHOC);
-        #else
-            WF_CASetListRetryCount(MY_DEFAULT_LIST_RETRY_COUNT_INFRASTRUCTURE);
-        #endif
-    #endif
-    
-
-    #if defined(STACK_USE_UART)        
-    putrsUART("Set Event Notify\r\n");    
-    #endif
-    WF_CASetEventNotificationAction(MY_DEFAULT_EVENT_NOTIFICATION_LIST);
-    
-    #if defined(STACK_USE_UART)
-    putrsUART("Set Beacon Timeout\r\n");
-    #endif
-    WF_CASetBeaconTimeout(40);
-    
-    /* Set Security */
-    #if (MY_DEFAULT_WIFI_SECURITY_MODE == WF_SECURITY_OPEN)
-        #if defined(STACK_USE_UART)
-        putrsUART("Set Security (Open)\r\n");
-        #endif
-    #elif (MY_DEFAULT_WIFI_SECURITY_MODE == WF_SECURITY_WEP_40)
-        #if defined(STACK_USE_UART)
-        putrsUART("Set Security (WEP40)\r\n");
-        #endif
-    #elif (MY_DEFAULT_WIFI_SECURITY_MODE == WF_SECURITY_WEP_104)
-        #if defined(STACK_USE_UART)
-        putrsUART("Set Security (WEP104)\r\n");
-        #endif
-    #elif MY_DEFAULT_WIFI_SECURITY_MODE == WF_SECURITY_WPA_WITH_KEY 
-        #if defined(STACK_USE_UART)
-        putrsUART("Set Security (WPA with key)\r\n");
-        #endif
-    #elif MY_DEFAULT_WIFI_SECURITY_MODE == WF_SECURITY_WPA2_WITH_KEY 
-        #if defined(STACK_USE_UART)
-        putrsUART("Set Security (WPA2 with key)\r\n");
-        #endif
-    #elif MY_DEFAULT_WIFI_SECURITY_MODE == WF_SECURITY_WPA_WITH_PASS_PHRASE
-        #if defined(STACK_USE_UART)
-        putrsUART("Set Security (WPA with pass phrase)\r\n");
-        #endif
-    #elif MY_DEFAULT_WIFI_SECURITY_MODE == WF_SECURITY_WPA2_WITH_PASS_PHRASE
-        #if defined(STACK_USE_UART)
-        putrsUART("Set Security (WPA2 with pass phrase)\r\n");    
-        #endif
-    #elif MY_DEFAULT_WIFI_SECURITY_MODE == WF_SECURITY_WPA_AUTO_WITH_KEY
-        #if defined(STACK_USE_UART)
-        putrsUART("Set Security (WPA with key, auto-select)\r\n");
-        #endif
-    #elif MY_DEFAULT_WIFI_SECURITY_MODE == WF_SECURITY_WPA_AUTO_WITH_PASS_PHRASE
-        #if defined(STACK_USE_UART)
-        putrsUART("Set Security (WPA with pass phrase, auto-select)\r\n");
-        #endif
-    #endif /* MY_DEFAULT_WIFI_SECURITY_MODE */
-
-    WF_CPSetSecurity(ConnectionProfileID,
-                     AppConfig.SecurityMode,
-                     AppConfig.WepKeyIndex,   /* only used if WEP enabled */
-                     AppConfig.SecurityKey,
-                     AppConfig.SecurityKeyLength);
-    #if defined(STACK_USE_UART)                     
-    putrsUART("Start WiFi Connect\r\n");        
-    #endif
-    WF_CMConnect(ConnectionProfileID);
-}   
-#endif /* WF_CS_TRIS */
 
 // Writes an IP address to the LCD display and the UART as available
 void DisplayIPValue(IP_ADDR IPVal)
@@ -624,34 +432,6 @@ void DisplayIPValue(IP_ADDR IPVal)
 		LCDUpdate();
 	#endif
 }
-
-// Processes A/D data from the potentiometer
-static void ProcessIO(void)
-{
-#if defined(__C30__) || defined(__C32__)
-    // Convert potentiometer result into ASCII string
-    uitoa((WORD)ADC1BUF0, AN0String);
-#else
-    // AN0 should already be set up as an analog input
-    ADCON0bits.GO = 1;
-
-    // Wait until A/D conversion is done
-    while(ADCON0bits.GO);
-
-	// AD converter errata work around (ex: PIC18F87J10 A2)
-	#if !defined(__18F87J50) && !defined(_18F87J50) && !defined(__18F87J11) && !defined(_18F87J11) 
-	{
-		BYTE temp = ADCON2;
-		ADCON2 |= 0x7;	// Select Frc mode by setting ADCS0/ADCS1/ADCS2
-		ADCON2 = temp;
-	}
-	#endif
-
-    // Convert 10-bit value into ASCII string
-    uitoa(*((WORD*)(&ADRESL)), AN0String);
-#endif
-}
-
 
 /****************************************************************************
   Function:
