@@ -18,6 +18,7 @@ class HeepMemoryUtilities:
 	VertexOpCode = chr(0x03)
 	ClientNameOpCode = chr(0x06)
 	XYPositionOpCode = chr(0x07)
+	IPAddressOPCode = chr(0x08)
 
 	def __init__(self):
 		return
@@ -150,10 +151,10 @@ class HeepMemoryUtilities:
 		IPOct2 = int(splitIP[2])
 		IPOct3 = int(splitIP[1])
 		IPOct4 = int(splitIP[0])
-		byteArray.append(chr(IPOct1))
-		byteArray.append(chr(IPOct2))
-		byteArray.append(chr(IPOct3))
 		byteArray.append(chr(IPOct4))
+		byteArray.append(chr(IPOct3))
+		byteArray.append(chr(IPOct2))
+		byteArray.append(chr(IPOct1))
 
 		return byteArray
 
@@ -209,6 +210,64 @@ class HeepMemoryUtilities:
 	def GetVertexFromByteArray(self, byteArray, clientID) :
 		vertexInfo = self.GetVertexInfoFromByteArray(byteArray, clientID)
 		return vertexInfo.data
+
+	def AppendIPAddressToByteArray(self, byteArray, clientID, IPAddress) :
+		byteArray.append(self.IPAddressOPCode)
+		byteArray = self.AppendClientIDToByteArray(byteArray, clientID)
+		byteArray.append(chr(4))
+
+		splitIP = IPAddress.split('.')
+		IPOct1 = int(splitIP[3])
+		IPOct2 = int(splitIP[2])
+		IPOct3 = int(splitIP[1])
+		IPOct4 = int(splitIP[0])
+
+		byteArray.append(chr(IPOct4))
+		byteArray.append(chr(IPOct3))
+		byteArray.append(chr(IPOct2))
+		byteArray.append(chr(IPOct1))
+
+		return byteArray
+
+	def ReadIPAddressOPCode(self, byteArray, counter) :
+		counter = counter+1
+		(clientID, counter) = self.GetClientIDFromMemory(byteArray, counter)
+		(numBytes, counter) = self.GetNumberFromMemory(byteArray, counter, 1)
+
+		(IPOct1,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
+		(IPOct2,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
+		(IPOct3,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
+		(IPOct4,counter) = self.GetNumberFromMemory(byteArray, counter, 1)
+
+		IPAddr = str(IPOct1) + '.' + str(IPOct2) + '.' + str(IPOct3) + '.' + str(IPOct4)
+
+		RetData = MemoryData()
+		RetData.counter = counter
+		RetData.clientID = clientID
+		RetData.data = IPAddr
+
+		return RetData
+
+
+	def GetIPAddressInfoFromByteArray(self, byteArray, clientID) :
+		counter = 0
+		while counter < len(byteArray) :
+			if byteArray[counter] == self.IPAddressOPCode :
+				capturedIP = self.ReadIPAddressOPCode(byteArray, counter)
+				counter = capturedIP.counter
+				capturedClient = capturedIP.clientID
+				
+				if capturedClient == clientID :
+					return capturedIP
+
+			else :
+				counter = self.SkipOpCode(byteArray, counter)
+
+		return MemoryData()
+
+	def GetIPAddressFromByteArray(self, byteArray, clientID) :
+		IPInfo = self.GetIPAddressInfoFromByteArray(byteArray, clientID)
+		return IPInfo.data
 
 	def AppendClientDataToByteArray(self, byteArray, clientID) :
 
