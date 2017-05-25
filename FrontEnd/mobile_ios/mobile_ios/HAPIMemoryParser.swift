@@ -7,11 +7,11 @@
 //
 
 import UIKit
-
-var deviceMap = [Int: Int]()
+import RealmSwift
 
 class HAPIMemoryParser {
     
+    let realm = try! Realm(configuration: config)
     
     public func BuildIsHeepDeviceCOP() -> [UInt8] {
         
@@ -66,10 +66,11 @@ class HAPIMemoryParser {
     
     public func ParseMemoryDump(dump: [UInt8], ipAddress: String) {
         print(dump)
-        
         let header = ParseDeviceID(dump: dump, index: 1)
+        let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: header.deviceID)
+
         
-        if (CheckDevicePositionInArray(deviceID: header.deviceID) == nil) {
+        if thisDevice == nil {
             let packet = CalculateNumberOfBytes(dump: dump, index: header.index)
             var index = packet.index
             
@@ -123,27 +124,45 @@ class HAPIMemoryParser {
         return packet.index + packet.numBytes
     }
     
-    func ParseDevice(dump: [UInt8], index: Int, deviceID: Int, ipAddress: String) {
-        //let version = dump[index]
-        
-        if (CheckDevicePositionInArray(deviceID: deviceID) == nil) {
-            AddNewDevice(deviceID: deviceID, ipAddress: ipAddress)
-        } else { print("This devices has already been detected") }
-        
-    }
-    
     func CalculateNumberOfBytes(dump: [UInt8], index: Int) -> (numBytes: Int, index: Int) {
         // currently only supporting up to 256 bytes
         return (Int(dump[index]), index + 1)
     }
     
+    func ParseDevice(dump: [UInt8], index: Int, deviceID: Int, ipAddress: String) {
+        //let version = dump[index]
+        let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: deviceID)
+        
+        if thisDevice == nil {
+            print("Adding anyways...")
+            AddNewDevice(deviceID: deviceID, ipAddress: ipAddress)
+        } else { print("This devices has already been detected") }
+        
+    }
     
     func AddNewDevice(deviceID: Int, ipAddress: String) {
         print("Found a new device... adding now")
-        deviceMap[deviceID] = deviceMap.count
-        let newDevice = Device(deviceID: deviceID)
+        let newDevice = Device()
+        newDevice.deviceID = deviceID
         newDevice.ipAddress = ipAddress
-        devices.append(newDevice)
+        newDevice.associatedPlace = currentWifi["bssid"]!
+        
+        try! realm.write {
+            
+            realm.add(newDevice)
+        }
+        
+        // Add device to the current Place using BSSID of wifi network
+        let devices = realm.objects(Device.self).filter("associatedPlace == %s", currentWifi["bssid"]!)
+        
+        try! realm.write {
+            
+            realm.create(Place.self,
+                         value: ["bssid": currentWifi["bssid"]!,
+                                 "devices": devices],
+                         update: true)
+        }
+        
     }
     
     func AddControlToDevice(dump: [UInt8], index: Int, deviceID: Int, packetSize: Int ) {
@@ -151,24 +170,32 @@ class HAPIMemoryParser {
         
         let controlName = GetStringFromByteArrayIndices(dump: dump, indexStart: index + 6, indexFinish: index + packetSize)
         
-        let newControl = DeviceControl(deviceID: deviceID,
-                                       controlID: Int(dump[index]),
-                                       controlType: Int(dump[index + 1]),
-                                       controlDirection: Int(dump[index + 2]),
-                                       valueLow: Int(dump[index + 3]),
-                                       valueHigh: Int(dump[index + 4]),
-                                       valueCurrent: Int(dump[index + 5]),
-                                       controlName: controlName)
-        
-        
+        let newControl = DeviceControl()
+        /*if let parentDevice = realm.objects(Device.self).filter("deviceID == '\(deviceID))'").first {
+            newControl.deviceID = parentDevice
+        }*/
+        newControl.deviceID = deviceID
+        newControl.controlID = Int(dump[index])
+        newControl.uniqueID = String(deviceID) + String(dump[index])
+        newControl.controlType = Int(dump[index + 1])
+        newControl.controlDirection = Int(dump[index + 2])
+        newControl.valueLow = Int(dump[index + 3])
+        newControl.valueHigh = Int(dump[index + 4])
+        newControl.valueCurrent = Int(dump[index + 5])
+        newControl.controlName = controlName
+        try! realm.write {
+            realm.add(newControl)
+        }
         
         // Resolve Addition to device array (masterState)
-        if let thisDeviceIndex = CheckDevicePositionInArray(deviceID: deviceID) {
-            print("Adding Control \(newControl.controlName) to device \(deviceID)")
-            devices[thisDeviceIndex].controlList.append(newControl)
-            
-        } else {
-            print("We haven't seen this device yet...")
+        let thisDevicesControls = realm.objects(DeviceControl.self).filter("deviceID == %d", deviceID)
+        print(thisDevicesControls)
+        
+        try! realm.write {
+            realm.create(Device.self,
+                         value: ["deviceID": deviceID,
+                                 "controlList": thisDevicesControls],
+                         update: true)
         }
         
     }
@@ -177,14 +204,22 @@ class HAPIMemoryParser {
         let deviceName = GetStringFromByteArrayIndices(dump: dump, indexStart: index, indexFinish: index + packetSize - 1)
         
         // Resolve Addition to device array (masterState)
-        if let thisDeviceIndex = CheckDevicePositionInArray(deviceID: deviceID) {
+        let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: deviceID)
+        if thisDevice != nil {
             print("Adding Device Name \(deviceName) to device \(deviceID)")
-            devices[thisDeviceIndex].name = deviceName
-            devices[thisDeviceIndex].iconName = SuggestIconFromName(name: deviceName)
+            
+            try! realm.write {
+                realm.create(Device.self,
+                             value: ["deviceID": deviceID,
+                                    "name": deviceName,
+                                    "iconName": SuggestIconFromName(name: deviceName)],
+                             update: true)
+            }
             
         } else {
             print("We haven't seen this device yet...")
         }
+        
     }
     
     func SuggestIconFromName(name: String) -> String {
@@ -201,10 +236,6 @@ class HAPIMemoryParser {
         } 
         
         return suggestion
-    }
-    
-    func CheckDevicePositionInArray(deviceID: Int) -> Int? {
-        return deviceMap[deviceID]
     }
     
     func GetStringFromByteArrayIndices(dump: [UInt8], indexStart: Int, indexFinish: Int) -> String {
@@ -229,9 +260,6 @@ class HAPIMemoryParser {
         
         return (index + 4, deviceID)
     }
-    
-    
-    
     
     
 }
