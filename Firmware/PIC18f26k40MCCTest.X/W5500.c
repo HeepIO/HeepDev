@@ -288,6 +288,16 @@ uint8_t ReadSocketStatus(uint8_t socket)
     return ReadSingleByteW5500WithCntl(Sn_SR, GetReadControlByteFromSocket(socket));
 }
 
+uint8_t ReadSocketIR(uint8_t socket)
+{
+    return ReadSingleByteW5500WithCntl(Sn_IR, GetReadControlByteFromSocket(socket));
+}
+
+void WriteSocketIR(uint8_t socket, uint8_t value)
+{
+    SetSingleByteW5500WithCntl(Sn_CR ,value, GetWriteControlByteFromSocket(socket));
+}
+
 void WriteSocketTXPointer(uint8_t socket, uint16_t value)
 {
     uint8_t dataPointer[2];
@@ -368,6 +378,21 @@ void SendData(uint8_t* buf, uint16_t len)
     WriteSocketTXPointer(0, pointer);
     
     WriteSocketCommand(0, Sn_CR_SEND);
+    
+    uint8_t socketIRValue = 0; 
+    uint8_t socketSRValue = 0;
+    uint8_t sendOKValue = Sn_IR_SEND_OK;
+    do
+    {
+        socketIRValue = ReadSocketIR(0);
+        socketSRValue = ReadSocketStatus(0);
+        
+        if(socketSRValue == Sn_SR_CLOSED)
+        {
+            CloseSocket();
+            return;
+        }
+    }while( (socketIRValue & sendOKValue) != sendOKValue );
 }
 
 void Listen(uint16_t sourcePort)
@@ -385,6 +410,13 @@ void Listen(uint16_t sourcePort)
 
 uint16_t DataAvailable()
 {
+    // If Not listening, listen... Otherwise data will never be available 
+//    uint8_t socketStatus = ReadSocketStatus(0);
+//    if(socketStatus != Sn_SR_LISTEN)
+//    {
+//        Listen(5000);
+//    }
+    
     uint16_t val=0,val1=0;
     do {
         val1 = ReadRecievedBufferSize(0);
@@ -426,6 +458,12 @@ void Disconnect()
     {
         socketStatus = ReadSocketStatus(0);
     }while(socketStatus != Sn_SR_CLOSED);
+}
+
+void CloseSocket()
+{
+  WriteSocketCommand(0, Sn_CR_CLOSE);
+  WriteSocketIR(0, 0xFF);
 }
 
 void FillBuf4(uint8_t* buf, uint8_t a, uint8_t b, uint8_t c, uint8_t d)
