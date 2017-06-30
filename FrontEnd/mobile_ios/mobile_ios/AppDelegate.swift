@@ -13,12 +13,9 @@ import UserNotifications
 import CoreLocation
 import FacebookCore
 
-var configPublic = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
-var configUser = Realm.Configuration(fileURL: configPublic.fileURL!.deletingLastPathComponent()
-    .appendingPathComponent("guest.realm"), deleteRealmIfMigrationNeeded: true)
-var configGuest = Realm.Configuration(fileURL: configPublic.fileURL!.deletingLastPathComponent()
-    .appendingPathComponent("guest.realm"), deleteRealmIfMigrationNeeded: true)
-var configPublicSync =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: SyncUser.current!,realmURL: URL(string: "realm://45.55.249.217:9080/3236896a34becbac18c96a9a24c55de9/userDirectory")!))
+var configGuest = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
+var configUser = configGuest
+var configPublicSync =  Realm.Configuration(syncConfiguration: SyncConfiguration(user: SyncUser.current!, realmURL: URL(string: "realm://45.55.249.217:9080/3236896a34becbac18c96a9a24c55de9/userDirectory")!))
 
 protocol AddBeacon {
     func addBeacon(beacon: HeepBeacon)
@@ -36,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         flushApp()
         initializeApp()
         setupAppNavigation()
-        //startMonitoringBeacon()
+        startMonitoringBeacon()
         
         return true
     }

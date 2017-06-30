@@ -156,7 +156,7 @@ class PlacesView: UIViewController {
 
         let groupView = GroupCollectionView()
         groupView.thisPlace = enterPlace!
-        navigationController?.pushViewController(groupView, animated: true)
+        navigationController?.pushViewController(groupView, animated: false)
         
         
     }
@@ -283,7 +283,7 @@ extension PlacesView {
     }
     
     func getActiveUserIcon() -> UIBarButtonItem {
-        let realm = try! Realm(configuration: configPublic)
+        //let realm = try! Realm(configuration: configPublicSync)
         
         var userImage = UIImage(named: "female")
         /*

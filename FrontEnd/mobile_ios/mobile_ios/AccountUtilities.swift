@@ -10,7 +10,18 @@ import Foundation
 import RealmSwift
 
 func initializeApp() {
-    logoutOfAllRealmUsers()
+    print("Initializing")
+    
+    if SyncUser.current == nil {
+        
+        print("Logging out")
+        logoutOfAllRealmUsers()
+        configUser = configGuest
+        
+    } else {
+        configUser = Realm.Configuration(syncConfiguration: SyncConfiguration(user: SyncUser.current!, realmURL: URL(string: "realm://45.55.249.217:9080/~/heepzone")!))
+    }
+    
     //loginToPublicRealm()
     
 }
