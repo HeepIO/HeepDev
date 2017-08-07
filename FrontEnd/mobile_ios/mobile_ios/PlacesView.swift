@@ -20,7 +20,7 @@ class PlacesView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.initRealmNotification()
+        self.initNotification()
         self.setupNavBar()
         
         addPlaces()
@@ -31,7 +31,7 @@ class PlacesView: UIViewController {
         self.view.backgroundColor = .white
         self.navigationController?.isToolbarHidden = false
         
-        let addPlace = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPlaceToRealm))
+        let addPlace = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPlaceToDatabase))
         
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         
@@ -66,55 +66,39 @@ class PlacesView: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.title = "My Heep Zones"
-        self.initRealmNotification()
+        self.initNotification()
         self.reloadView()
         
     }
     
-
     func addPlaces() {
-        let realm = try! Realm(configuration: configUser)
         
-//        let currentWifi = currentWifiInfo()
-//        let thisWifiCheck = realm.objects(Place.self).filter("bssid == %s", currentWifi.bssid)
-//        if (thisWifiCheck.count == 0) {
-//            addPlaceToRealm()
-//        }
-        
-        let perspectives = realm.objects(PlacePerspective.self)
-        
-        for perspective in perspectives {
+        for perspective in database().getMyPlaces() {
             
-            let thisPlaceRealm = try! Realm(configuration: getPlaceConfiguration(path: perspective.realmPath))
-            
-            if let place = thisPlaceRealm.objects(Place.self).first {
+            if let place = database().getPlace(context: perspective) {
                 
                 self.drawPlace(place: place, perspective: perspective)
                 
             } else {
+                print("Could not find any places at this config")
                 
-                asyncOpenPlace(perspective: perspective)
-                print("Could not find any places at this realm config")
+                database().getPlaceAsync(context: perspective, callback: {
+                    
+                    if let place = database().getPlace(context: perspective) {
+                        
+                        self.drawPlace(place: place, perspective: perspective)
+                                        
+                    }
+                })
+                
             }
         
         }
     }
     
-    func asyncOpenPlace(perspective: PlacePerspective) {
-        openRealmAsync(config: getPlaceConfiguration(path: perspective.realmPath), callback: {
-            let thisPlaceRealm = try! Realm(configuration: getPlaceConfiguration(path: perspective.realmPath))
-            
-            if let place = thisPlaceRealm.objects(Place.self).first {
-                
-                self.drawPlace(place: place, perspective: perspective)
-                
-            }
-        })
-    }
-    
-    
-    func addPlaceToRealm() {
-        createPlaceRealm()
+    func addPlaceToDatabase() {
+        
+        database().createNewPlace()
         
     }
  
@@ -189,16 +173,32 @@ class PlacesView: UIViewController {
             
             if activelyPanning != Int(){
                 
-                let realm = try! Realm(configuration: configUser)
-                let thisPlace = realm.object(ofType: PlacePerspective.self, forPrimaryKey: gesture.view?.tag)
                 
-                try! realm.write {
-                    thisPlace?.x = (thisPlace?.x)! + gesture.translation(in: self.view).x
-                    thisPlace?.y = (thisPlace?.y)! + gesture.translation(in: self.view).y
+                guard let tag = gesture.view?.tag else {
+                    print("Couldn't get view tag")
+                    return
                 }
                 
-                
-                self.reloadView()
+                database().getPlaceContext(id: tag) { (context) in
+                    
+                    guard let thisPlace = context else {
+                        print("Failed to get placeContext")
+                        return
+                    }
+                    
+                    let newContext = PlacePerspective()
+                    newContext.x = thisPlace.x + gesture.translation(in: self.view).x
+                    newContext.y = thisPlace.y + gesture.translation(in: self.view).y
+                    
+                    newContext.numDevices = thisPlace.numDevices
+                    newContext.placeID = thisPlace.placeID
+                    newContext.radius = thisPlace.radius
+                    newContext.realmPath = thisPlace.realmPath
+                    
+                    database().updatePlaceContext(placeContext: newContext)
+                    
+                    self.reloadView()
+                }
                 
             }
             
@@ -225,19 +225,6 @@ class PlacesView: UIViewController {
             
         }
     }
-    
-    func deleteAll() {
-        print("Deleting all Devices")
-        let realm = try! Realm(configuration: configUser)
-        try! realm.write {
-         
-            realm.deleteAll()
-            
-         }
-        
-        self.loadView()
-        self.viewDidLoad()
-    }
 }
 
 extension PlacesView {
@@ -254,27 +241,11 @@ extension PlacesView {
         
     }
     
-    func initRealmNotification() {
-        let realm = try! Realm(configuration: configUser)
-        let places = realm.objects(PlacePerspective.self)
+    func initNotification() {
         
-        notificationToken = places.addNotificationBlock { [weak self] (changes: RealmCollectionChange) in
-            
-            switch changes {
-            case .update:
-                
-                self?.reloadView()
-                break
-                
-            case .error(let error):
-                
-                fatalError("\(error)")
-                break
-                
-            default: break
-            }
+        notificationToken = database().watchPlaces() {
+            self.reloadView()
         }
-        
 
     }
     
@@ -283,15 +254,9 @@ extension PlacesView {
     }
     
     func getActiveUserIcon() -> UIBarButtonItem {
-        let realm = try! Realm(configuration: configUser)
-        let myID = realm.objects(User.self).first?.heepID
+        let myID = database().getMyHeepID()
         
-        var userImage = #imageLiteral(resourceName: "female")
-        
-        if myID != nil {
-            
-            userImage = myImage(userID: myID!)
-        }        
+        let userImage = database().getUserIcon(heepID: myID)
         
         let userButton = UIButton(frame: CGRect(x: 0, y: 0,
                                                 width: (navigationController?.navigationBar.bounds.height)!,

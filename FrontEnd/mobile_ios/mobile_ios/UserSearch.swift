@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import RealmSwift
-
 
 class UserSearch: UIViewController {
     
@@ -32,8 +30,7 @@ class UserSearch: UIViewController {
     
     func populateAllUsers() {
         
-        let realm = try! Realm(configuration: configPublicSync)
-        allUsers = realm.objects(User.self).toArray()
+        allUsers = database().getAllUsers()
         
     }
     
@@ -89,17 +86,14 @@ extension UserSearch: UICollectionViewDataSource, UICollectionViewDelegate {
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let realm = try! Realm(configuration: configPublicSync)
-        
-        return realm.objects(User.self).count
+        return database().getAllUsers().count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell: UICollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath as IndexPath) as UICollectionViewCell
         
-        let realm = try! Realm(configuration: configUser)
-        let myID = realm.objects(User.self).first?.heepID
+        let myID = database().getMyHeepID()
         
         if allUsers[indexPath.row].heepID == myID {
             cell.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
@@ -132,7 +126,9 @@ extension UserSearch: UICollectionViewDataSource, UICollectionViewDelegate {
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { action in
             print("ADD")
             
-            grantPermissionToOtherUser(deviceID: self.thisDevice.deviceID, userID: (gesture.view?.tag)!)
+            database().grantUserAccessToDevice(deviceID: self.thisDevice.deviceID,
+                                               userID: (gesture.view?.tag)!)
+            
             self.exitSearch()
         }))
         
@@ -144,18 +140,6 @@ extension UserSearch: UICollectionViewDataSource, UICollectionViewDelegate {
         present(alert, animated: false, completion: nil)
 
         
-        
-    }
-    
-    
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        
-    }
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if !decelerate {
-            
-        }
         
     }
     

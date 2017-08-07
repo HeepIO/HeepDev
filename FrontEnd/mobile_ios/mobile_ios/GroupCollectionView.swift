@@ -9,9 +9,8 @@
 import UIKit
 import RealmSwift
 
-
 class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    var notificationTokenList = [NotificationToken]()
+    var notificationTokenList = [NotificationToken?]()
     var collectionView: UICollectionView!
     
     var placeName: String = "placeholder"
@@ -31,31 +30,28 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         
         self.title = placeName
         
-        self.initRealmNotifications()
+        self.initNotifications()
         self.setupCollectionView()
         self.setupNavBar()
         
     }
     
-    func initRealmNotifications() {
+    func initNotifications() {
         groups = []
         
-        let realm = try! Realm(configuration: configUser)
-        
-        let groupPerspectives = realm.objects(GroupPerspective.self).filter("placeID = %@", placeID).toArray()
+        let groupPerspectives = database().getGroupContextsForPlace(placeID: placeID)
         
         for perspective in groupPerspectives {
             
-            let thisGroupRealm = try! Realm(configuration: getGroupConfiguration(path: perspective.realmPath))
-            
-            if let thisGroup = thisGroupRealm.objects(Group.self).first {
+            if let thisGroup = database().getGroup(context: perspective) {
                 
                 initGroupNotification(group: thisGroup)
                 
             } else {
                 
+                print("Could not find any groups at this database config")
                 asyncOpenGroup(perspective: perspective)
-                print("Could not find any groups at this realm config")
+                
             }
             
         }
@@ -63,15 +59,16 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
     }
     
     func asyncOpenGroup(perspective: GroupPerspective) {
-        openRealmAsync(config: getGroupConfiguration(path: perspective.realmPath), callback: {
-            let thisGroupRealm = try! Realm(configuration: getGroupConfiguration(path: perspective.realmPath))
-            
-            if let thisGroup = thisGroupRealm.objects(Group.self).first {
+        
+        database().getGroupAsync(context: perspective) {
+            if let thisGroup = database().getGroup(context: perspective) {
                 
                 self.initGroupNotification(group: thisGroup)
+                
             }
+            
             self.reloadView()
-        })
+        }
     }
 
     
@@ -79,27 +76,9 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
         
         groups.append(group)
         
-        print(groups)
-        
-        let notificationToken = group.addNotificationBlock { changes in
-
-                switch changes {
-                case .change:
-                    
-                    self.reloadView()
-                    
-                    break
-                    
-                case .error(let error):
-                    
-                    fatalError("\(error)")
-                    break
-                    
-                default: break
-                }
-        }
-        
-        notificationTokenList.append(notificationToken)
+        notificationTokenList.append(database().watchGroup(groupID: group.groupID) {
+            self.reloadView()
+        })
         
         
     }
@@ -144,7 +123,7 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
     
     deinit{
         for token in notificationTokenList {
-            token.stop()
+            token?.stop()
         }
     }
     
@@ -152,7 +131,7 @@ class GroupCollectionView: UIViewController, UICollectionViewDelegateFlowLayout,
     override func viewWillDisappear(_ animated: Bool) {
         
         for token in notificationTokenList {
-            token.stop()
+            token?.stop()
         }
         
         self.title = ""
@@ -259,7 +238,8 @@ extension GroupCollectionView {
     }
     
     func addGroupFromButton() {
-        createGroupRealm(placeID: placeID)
+        database().createNewGroup(placeID: placeID)
+        
         self.reloadView()
     }
     

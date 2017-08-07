@@ -7,11 +7,8 @@
 //
 
 import UIKit
-import RealmSwift
 
 class HAPIMemoryParser {
-    
-    let realm = try! Realm(configuration: configUser)
     
     public func BuildIsHeepDeviceCOP() -> [UInt8] {
         
@@ -66,8 +63,13 @@ class HAPIMemoryParser {
         let txControlID = (vertex.tx?.controlID)!
         let rxControlID = (vertex.rx?.controlID)!
         
-        let rxDevice = realm.object(ofType: Device.self, forPrimaryKey: (vertex.rx?.deviceID)!)
-        let rxIPAddress = IPStringToByteArray(IPString: (rxDevice?.ipAddress)!)
+        guard let rxDevice = database().getDevice(deviceID: (vertex.rx?.deviceID)!) else {
+            print("could not find rx device")
+            return [UInt8]()
+            
+        }
+        
+        let rxIPAddress = IPStringToByteArray(IPString: rxDevice.ipAddress)
         
         packet.append(contentsOf: txDeviceID)
         packet.append(contentsOf: rxDeviceID)
@@ -105,6 +107,7 @@ class HAPIMemoryParser {
     }
     
     public func ParseROP(dump: [UInt8], ipAddress: String) {
+        print("Parsing...")
         
         if (dump[0] == 0x0F){
             // Memory Dump
@@ -131,7 +134,7 @@ class HAPIMemoryParser {
     }
     
     public func ParseMemoryDump(dump: [UInt8], ipAddress: String) {
-        print(dump)
+        print("DUMP: \(dump)")
         let header = ParseDeviceID(dump: dump, index: 1)
         let packet = CalculateNumberOfBytes(dump: dump, index: header.index)
         var index = packet.index
@@ -207,10 +210,7 @@ class HAPIMemoryParser {
         newDevice.ipAddress = ipAddress
         newDevice.active = true
         
-        try! realm.write {
-            realm.add(newDevice, update: true)
-        }
-        
+        database().writeDevice(device: newDevice)
         
     }
     
@@ -219,55 +219,21 @@ class HAPIMemoryParser {
         
         let controlName = GetStringFromByteArrayIndices(dump: dump, indexStart: index + 6, indexFinish: index + packetSize)
         
-        let currentWifi = currentWifiInfo()
         let uniqueID = generateUniqueControlID(deviceID: deviceID, controlID: dump[index])
-        let existingControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: uniqueID)
-        //print("\(controlName): \(Int(dump[index + 5]))")
-        if existingControl != nil {
-            flushControlVertices(controlUniqueID: uniqueID)
-            
-            try! realm.write {
-                existingControl?.deviceID = deviceID
-                existingControl?.controlID = Int(dump[index])
-                existingControl?.controlType = Int(dump[index + 1])
-                existingControl?.controlDirection = Int(dump[index + 2])
-                existingControl?.valueLow = Int(dump[index + 3])
-                existingControl?.valueHigh = Int(dump[index + 4])
-                existingControl?.valueCurrent = Int(dump[index + 5])
-                existingControl?.controlName = controlName
-            }
-        } else {
-            
-            let newControl = DeviceControl()
-            newControl.deviceID = deviceID
-            newControl.controlID = Int(dump[index])
-            newControl.uniqueID = uniqueID
-            newControl.controlType = Int(dump[index + 1])
-            newControl.controlDirection = Int(dump[index + 2])
-            newControl.valueLow = Int(dump[index + 3])
-            newControl.valueHigh = Int(dump[index + 4])
-            newControl.valueCurrent = Int(dump[index + 5])
-            newControl.controlName = controlName
-            
-            try! realm.write {
-                
-                realm.add(newControl, update: true)
-                
-            }
-        }
         
+        let newControl = DeviceControl()
+        newControl.deviceID = deviceID
+        newControl.controlID = Int(dump[index])
+        newControl.uniqueID = uniqueID
+        newControl.controlType = Int(dump[index + 1])
+        newControl.controlDirection = Int(dump[index + 2])
+        newControl.valueLow = Int(dump[index + 3])
+        newControl.valueHigh = Int(dump[index + 4])
+        newControl.valueCurrent = Int(dump[index + 5])
+        newControl.controlName = controlName
         
-        
-        // Resolve Addition to device array (masterState)
-        let thisDevicesControls = realm.objects(DeviceControl.self).filter("deviceID == %d", deviceID)
-        
-        try! realm.write {
-            realm.create(Device.self,
-                         value: ["deviceID": deviceID,
-                                 "controlList": thisDevicesControls],
-                         update: true)
-        }
-        
+        database().updateDeviceControl(control: newControl)
+        database().updateDeviceControlList(deviceID: deviceID)
     }
     
     func parseVertexMOP(dump: [UInt8], index: Int, packetSize: Int, deviceID: Int) {
@@ -278,52 +244,26 @@ class HAPIMemoryParser {
         let txControlID = dump[index + 4]
         let rxControlID = dump[index + 5]
         
-        let realm = try! Realm(configuration: configUser)
-        let txControl = realm.object(ofType: DeviceControl.self,
-                                     forPrimaryKey: generateUniqueControlID(deviceID: txDeviceID,
-                                                                            controlID: txControlID))
-        let rxControl = realm.object(ofType: DeviceControl.self,
-                                     forPrimaryKey: generateUniqueControlID(deviceID: rxDeviceID,
-                                                                            controlID: rxControlID))
+        let txControl = database().getDeviceControl(uniqueID: generateUniqueControlID(deviceID: txDeviceID, controlID: txControlID))
+        let rxControl = database().getDeviceControl(uniqueID: generateUniqueControlID(deviceID: rxDeviceID, controlID: rxControlID))
         
         let newVertex = Vertex()
         newVertex.rx = rxControl
         newVertex.tx = txControl
         newVertex.vertexID = nameVertex(tx: txControl, rx: rxControl)
         
-        let existingVertexCheck = realm.object(ofType: Vertex.self, forPrimaryKey: newVertex.vertexID)
+        let existingVertexCheck = database().getVertex(vertexID: newVertex.vertexID)
         
         if existingVertexCheck == nil && txControl != nil && rxControl != nil {
             
-            try! realm.write {
-                
-                realm.add(newVertex, update: true)
-            }
+            database().writeVertex(vertex: newVertex)
             
             
         }
         
         if txControl != nil {
-            let txVertices = realm.objects(Vertex.self).filter("tx == %@", txControl!)
-            
-            try! realm.write {
-                
-                realm.create(DeviceControl.self,
-                             value: ["uniqueID": (txControl?.uniqueID)!,
-                                     "vertexList": txVertices],
-                             update: true)
-            }
+            database().updateVertexList(tx: txControl!)
         }
-    }
-    
-    func flushControlVertices(controlUniqueID: Int) {
-        let realm = try! Realm(configuration: configUser)
-        let thisControl = realm.object(ofType: DeviceControl.self, forPrimaryKey: controlUniqueID)
-        try! realm.write {
-            
-            realm.delete((thisControl?.vertexList)!)
-        }
-        
     }
     
     
@@ -341,20 +281,15 @@ class HAPIMemoryParser {
         let deviceName = GetStringFromByteArrayIndices(dump: dump, indexStart: index, indexFinish: index + packetSize - 1)
         
         // Resolve Addition to device array (masterState)
-        let thisDevice = realm.object(ofType: Device.self, forPrimaryKey: deviceID)
-        if thisDevice != nil {
-            //print("Adding Device Name \(deviceName) to device \(deviceID)")
-            
-            try! realm.write {
-                
-                thisDevice?.name = deviceName
-                thisDevice?.iconName = SuggestIconFromName(name: deviceName)
-                
-            }
-            
-        } else {
+        guard let thisDevice = database().getDevice(deviceID: deviceID) else {
             print("We haven't seen this device yet...")
+            return
         }
+        
+        database().updateDeviceNameAndIcon(device: thisDevice,
+                                           deviceName: deviceName,
+                                           iconName: SuggestIconFromName(name: deviceName))
+        
         
     }    
     
