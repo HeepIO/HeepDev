@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;  
 using System.Net.Sockets;  
+using System.IO;
 using System.Text;  
 using System.Collections;
 using System.Collections.Generic;
@@ -88,6 +89,46 @@ namespace Heep
 			List <byte> retBuffer = new List<byte> ();
 			return retBuffer;
 		}
+
+		public static void SendAnalytics(DeviceID deviceID, List<byte> memoryDump)
+		{
+			List<byte> deviceIDList = deviceID.GetIDArray ();
+			string base64deviceID = Convert.ToBase64String(deviceIDList.ToArray());
+
+			Debug.Log ("Saving Analytics for " + base64deviceID);
+			string url = "https://heep-3cddb.firebaseio.com/analytics/" + base64deviceID + ".json";
+
+			string base64 = Convert.ToBase64String(memoryDump.ToArray());
+			string data = "\""+ base64 + "\"";
+
+			ThreadPool.QueueUserWorkItem (o => POST (url, data));
+		}
+
+		static void POST(string url, string jsonContent) 
+		{
+			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+			request.Method = "PUT";
+
+			System.Text.UTF8Encoding encoding = new System.Text.UTF8Encoding();
+			Byte[] byteArray = encoding.GetBytes(jsonContent);
+
+			request.ContentLength = byteArray.Length;
+			request.ContentType = @"application/json";
+
+			using (Stream dataStream = request.GetRequestStream()) {
+				dataStream.Write(byteArray, 0, byteArray.Length);
+			}
+			long length = 0;
+			try {
+				using (HttpWebResponse response = (HttpWebResponse)request.GetResponse()) {
+					length = response.ContentLength;
+				}
+			}
+			catch (WebException ex) {
+				Debug.LogException(ex);
+			}
+		}
+
 
 		public HeepCommunications ()
 		{
