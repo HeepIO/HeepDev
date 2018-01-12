@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using UnityEngine;
 
 namespace Heep
 {
@@ -70,29 +71,34 @@ namespace Heep
 				HeepDeviceAnalytics deviceAnalytics = new HeepDeviceAnalytics (changedControl.GetID (), changedControl.GetCurValue ());
 				List <byte> analyticsBuffer = deviceAnalytics.GetBytes (myID);
 				HeepLanguage.AddBufferToBuffer (deviceMemory, analyticsBuffer);
+
+				HeepCommunications.SendAnalytics (myID, deviceMemory);
+
 			}
 		}
 
-		public void SetControlByID(int ID, int newValue)
+		public void SetControlByID(int ID, int newValue, bool trackAnalytics = true)
 		{
 			for (int i = 0; i < controls.Count; i++) {
 				if (controls [i].GetID () == ID) {
 					controls[i].SetCurValue(newValue);
 
-					AddNewAnalyticsDataToDeviceMemory (controls[i]);
+					if(trackAnalytics)
+						AddNewAnalyticsDataToDeviceMemory (controls[i]);
 
 					SendOutput (controls [i]);
 				}
 			}
 		}
 
-		public void SetControlByName(String controlName, int newValue)
+		public void SetControlByName(String controlName, int newValue, bool trackAnalytics = true)
 		{
 			for (int i = 0; i < controls.Count; i++) {
 				if (controls [i].GetName () == controlName) {
 					controls [i].SetCurValue (newValue);
 
-					AddNewAnalyticsDataToDeviceMemory (controls[i]);
+					if(trackAnalytics)
+						AddNewAnalyticsDataToDeviceMemory (controls[i]);
 
 					SendOutput (controls [i]);
 				}
@@ -125,6 +131,13 @@ namespace Heep
 			return -1;
 		}
 
+		public void SetDeviceNameStartup(String name)
+		{
+			if (!HeepParser.DeviceNameOpCodeAlreadySet (deviceMemory)) {
+				SetDeviceName (name);
+			}
+		}
+
 		public void SetDeviceName(String name)
 		{
 			HeepLanguage.AddNameToMemory (deviceMemory, myID, name);
@@ -142,6 +155,8 @@ namespace Heep
 		public void LoadDeviceMemoryFromFile()
 		{
 			deviceMemory = NonVolatileData.ReadMemoryFromFile ();
+
+			vertices = HeepParser.GetVerticesFromBuffer (deviceMemory);
 		}
 	}
 
