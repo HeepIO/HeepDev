@@ -17,6 +17,8 @@ var mapStateToProps = (state, ownProps) => (
   display: state.vertexList[ownProps.vertexID].timeSinceDiscovered <= 1,
   dragging: state.flowchart.dragVertex,
   scale: state.flowchart.scale,
+  txCurrentValue: getTXControlProperty(state, ownProps, "valueCurrent"),
+  txCurrentControlType: getTXControlProperty(state, ownProps, "controlType"),
   txDeviceID: state.vertexList[ownProps.vertexID].txDeviceID,
   rxDeviceID: state.vertexList[ownProps.vertexID].rxDeviceID,
   txCollapsed: state.flowchart.devices[state.vertexList[ownProps.vertexID].txDeviceID] &&
@@ -26,11 +28,29 @@ var mapStateToProps = (state, ownProps) => (
   rxCollapsed: state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID] && state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID].collapsed ? state.flowchart.devices[state.vertexList[ownProps.vertexID].rxDeviceID].collapsed : false,
 })
 
+var getTXControlProperty = (state, ownProps, property) => {
+
+  var controlRef = getControlID(state, ownProps)
+
+  return state.controls[controlRef][property]
+
+}
+
+var getControlID = (state, ownProps) => {
+
+  var deviceID = state.vertexList[ownProps.vertexID].txDeviceID
+  var controlID = state.vertexList[ownProps.vertexID].txControlID
+
+  var controlRef = deviceID + "." + controlID
+
+  return controlRef
+
+}
+
 class Vertex extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			color: '#455a64',
 			strokeWidth: 3,
       collapsedColor: '#9fa1a2'
 		}
@@ -113,6 +133,15 @@ class Vertex extends React.Component {
     }
   }
 
+  getColor() {
+    if(this.props.txCurrentValue == 1 && this.props.txCurrentControlType == 0) {
+      return "blue"
+    }
+    else {
+      return "#455a64"
+    }
+  }
+
 	render() {
     const bezierWeight = 0.35
 
@@ -147,7 +176,7 @@ class Vertex extends React.Component {
         pointerEvents: 'all',
         display: 'inline-block',
 				strokeWidth: this.state.strokeWidth,
-				stroke: this.checkCollapsed() ? this.state.collapsedColor : this.state.color,
+				stroke: this.checkCollapsed() ? this.state.collapsedColor : this.getColor(),
 				fill: 'transparent',
         d: data,
         // d: "M".concat(	String(getInput.left),
@@ -166,7 +195,7 @@ class Vertex extends React.Component {
         //         " ",
         //         String(getOutput.top)),
 				onMouseEnter: () => this.checkCollapsed() ? this.setState({'strokeWidth': 3}) : this.setState({'color': '#d40000', 'strokeWidth': 5}),
-				onMouseLeave: () => this.checkCollapsed() ? this.setState({'strokeWidth': 3}) : this.setState({'color': '#455a64', 'strokeWidth': 3}),
+				onMouseLeave: () => this.checkCollapsed() ? this.setState({'strokeWidth': 3}) : this.setState({'color': this.getColor(), 'strokeWidth': 3}),
 				onClick: () => this.checkCollapsed() ? null : this.sendDeleteVertexToServer(),
 				style: {
 					cursor: this.checkCollapsed() ? 'move' : 'pointer',
