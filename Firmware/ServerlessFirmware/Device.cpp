@@ -125,8 +125,31 @@ void SetDeviceIcon(char deviceIcon)
 	SetIconIDInMemory_Byte(deviceIcon, deviceIDByte);
 }
 
-int SetControlValueByID(unsigned char controlID, unsigned int value, unsigned char setFromNetwork)
+int GetScaledValue(unsigned char controlID, unsigned int value, unsigned int highValue, unsigned int lowValue)
 {
+	// Special cases because can't scale if value if less than its own low or greater than its own high
+	if(value > highValue) value = highValue;
+	else if(value < lowValue) value = lowValue; 
+
+	// Special case to round up when receiving control has only 2 states
+	if(controlList[controlID].highValue - controlList[controlID].lowValue == 1)
+	{
+		if(highValue - lowValue == 1)
+			return value;
+		else if(value >= (highValue - lowValue)/2)
+			return controlList[controlID].highValue;
+		else 
+			return controlList[controlID].lowValue;
+	}
+
+	int scaledControlValue = (((value - lowValue) * (controlList[controlID].highValue - controlList[controlID].lowValue)) / (highValue - lowValue)) + controlList[controlID].lowValue;
+	return scaledControlValue;
+}
+
+int SetControlValueByID(unsigned char controlID, unsigned int value, unsigned int highValue, unsigned int lowValue, unsigned char setFromNetwork)
+{
+	value = GetScaledValue(controlID, value, highValue, lowValue);
+
 	int i;
 	for(i = 0; i < numberOfControls; i++)
 	{
@@ -181,9 +204,9 @@ int SetControlValueByIDBuffer(unsigned char controlID, heepByte* buffer, int buf
 	return 1;
 }
 
-int SetControlValueByIDFromNetwork(unsigned char controlID, unsigned int value)
+int SetControlValueByIDFromNetwork(unsigned char controlID, unsigned int value, unsigned int highValue, unsigned int lowValue)
 {
-	return SetControlValueByID(controlID, value, 1);
+	return SetControlValueByID(controlID, value, highValue, lowValue, 1);
 }
 
 int SetControlValueByIDFromNetworkBuffer(unsigned char controlID, heepByte* buffer, int bufferStartPoint, int bufferLength)

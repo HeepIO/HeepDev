@@ -90,12 +90,15 @@ unsigned long CalculateCoreMemorySize()
 	return coreMemorySize + CalculateControlDataSize();
 }
 
-void FillOutputBufferWithSetValCOP(unsigned char controlID, unsigned char value)
+void FillOutputBufferWithSetValCOP(unsigned char controlID, unsigned char value, unsigned char sourceControlID)
 {
 	ClearOutputBuffer();
 	AddNewCharToOutputBuffer(SetValueOpCode);
-	AddNewCharToOutputBuffer(2);
+	AddNewCharToOutputBuffer(5);
 	AddNewCharToOutputBuffer(controlID);
+	AddNewCharToOutputBuffer(controlList[sourceControlID].controlType);
+	AddNewCharToOutputBuffer(controlList[sourceControlID].highValue);
+	AddNewCharToOutputBuffer(controlList[sourceControlID].lowValue);
 	AddNewCharToOutputBuffer(value);
 }
 
@@ -245,22 +248,38 @@ void ExecuteSetValOpCode()
 {
 	unsigned int counter = 1;
 	unsigned char numBytes = inputBuffer[counter++];
-	unsigned char controlID = inputBuffer[counter++];
+	unsigned char controlID = inputBuffer[counter++]; numBytes--;
+	unsigned char sentControlType = inputBuffer[counter++]; numBytes--;
 
 	heepByte controlType = GetControlTypeFromControlID(controlID);
 
 	int success = 1;
 	if(controlType == 2)
 	{
-		success = SetControlValueByIDFromNetworkBuffer(controlID, inputBuffer, counter, numBytes - 1);
+		if(sentControlType == 2)
+			success = SetControlValueByIDFromNetworkBuffer(controlID, inputBuffer, counter, numBytes);
+		else
+			success = 1; // Can't set a number to a buffer
+	}
+	else if(controlType == 1 || controlType == 0)
+	{
+		if(sentControlType == 1 || sentControlType == 0)
+		{
+			heepByte highValue = inputBuffer[counter++]; numBytes--;
+			heepByte lowValue = inputBuffer[counter++]; numBytes--;
+
+			unsigned int value = GetNumberFromBuffer(inputBuffer, &counter, numBytes);
+			success = SetControlValueByIDFromNetwork(controlID, value, highValue, lowValue);
+		}
+		else
+			success = 1; // Can't set a buffer to a number
 	}
 	else
 	{
-		unsigned int value = GetNumberFromBuffer(inputBuffer, &counter, numBytes - 1);
-		success = SetControlValueByIDFromNetwork(controlID, value);
+		char ErrorMessage [] = "Failed to Set: Unkown control type";
+		FillOutputBufferWithError(ErrorMessage, strlen(ErrorMessage));
+		return;
 	}
-
-	
 
 	if(success == 0)
 	{

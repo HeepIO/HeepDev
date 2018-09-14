@@ -160,10 +160,14 @@ void TestSetValSuccess()
 	AddControl(theControl);
 
 	ClearInputBuffer();
-	inputBuffer[0] = 0x0A;
-	inputBuffer[1] = 0x02;
-	inputBuffer[2] = 0x00;
-	inputBuffer[3] = 0x04;
+	inputBuffer[0] = 0x0A;// OpCode
+	inputBuffer[1] = 0x05;
+	inputBuffer[2] = 0x00; // Destination ID
+	inputBuffer[3] = 0x00; // Source Control Type
+	inputBuffer[4] = 0x04; // Source High Val
+	inputBuffer[5] = 0x00; // Source Low Val
+	inputBuffer[6] = 0x03; // Value
+	inputBuffer[7] = 0x05; // Random junk for edge case test
 	ExecuteControlOpCodes();
 
 	ExpectedValue valueList[2];
@@ -172,7 +176,7 @@ void TestSetValSuccess()
 	valueList[0].actualValue = outputBuffer[0];
 
 	valueList[1].valueName = "Control Value";
-	valueList[1].expectedValue = 4;
+	valueList[1].expectedValue = 75;
 	valueList[1].actualValue = GetControlValueByID(0);
 
 	CheckResults(TestName, valueList, 2);
@@ -198,7 +202,10 @@ void TestSetValFailure()
 	inputBuffer[0] = 0x0A;
 	inputBuffer[1] = 0x02;
 	inputBuffer[2] = 0x01;
-	inputBuffer[3] = 0x04;
+	inputBuffer[3] = 0x00; // Source Control Type
+	inputBuffer[4] = 0x04; // Source High Val
+	inputBuffer[5] = 0x00; // Source Low Val
+	inputBuffer[6] = 0x03; // Value
 	ExecuteControlOpCodes();
 
 	ExpectedValue valueList[2];
@@ -830,6 +837,145 @@ void TestNameOverflowDetection()
 	CheckResults(TestName, valueList, 3);
 }
 
+void TestGetScaledValue()
+{
+	std::string TestName = "Test Scale Input Values";
+
+	ClearVertices();
+	ClearDeviceMemory();
+	ClearInputBuffer();
+	ClearControls();
+	
+	SetDeviceName("Test");
+	Control theControl;
+	theControl.controlName = "Test Control";
+	theControl.controlID = 0;
+	theControl.controlDirection = 1;
+	theControl.controlType = 1;
+	theControl.highValue= 1;
+	theControl.lowValue = 0;
+	theControl.curValue = 50;
+	AddControl(theControl);
+
+	Control theControl2;
+	theControl2.controlName = "Test Control 2";
+	theControl2.controlID = 1;
+	theControl2.controlDirection = 1;
+	theControl2.controlType = 1;
+	theControl2.highValue= 100;
+	theControl2.lowValue = 0;
+	theControl2.curValue = 50;
+	AddControl(theControl2);
+
+	int GetScaledValue(unsigned char controlID, unsigned int value, unsigned int highValue, unsigned int lowValue);
+
+	int shouldBe1 = GetScaledValue(0, 25, 50, 0);
+	int shouldBe50 = GetScaledValue(1, 25, 50, 0);
+	int shouldBe0 = GetScaledValue(0, 24, 50, 0);
+	int shouldBe1Two = GetScaledValue(0, 1, 2, 0);
+	int shouldBe100 = GetScaledValue(1, 3, 2, 0);
+	int shouldBe1Three = GetScaledValue(0, 1, 1, 0);
+	int shouldBe0Two = GetScaledValue(0, 0, 1, 0);
+
+	ExpectedValue valueList [7];
+	valueList[0].valueName = "Scaled 1";
+	valueList[0].expectedValue = 1;
+	valueList[0].actualValue = shouldBe1;
+
+	valueList[1].valueName = "Scaled 2";
+	valueList[1].expectedValue = 50;
+	valueList[1].actualValue = shouldBe50;
+
+	valueList[2].valueName = "Scaled 3";
+	valueList[2].expectedValue = 0;
+	valueList[2].actualValue = shouldBe0;
+
+	valueList[3].valueName = "Scaled 4";
+	valueList[3].expectedValue = 1;
+	valueList[3].actualValue = shouldBe1Two;
+
+	valueList[4].valueName = "Scaled 5";
+	valueList[4].expectedValue = 100;
+	valueList[4].actualValue = shouldBe100;
+
+	valueList[5].valueName = "Scaled 6";
+	valueList[5].expectedValue = 1;
+	valueList[5].actualValue = shouldBe1Three;
+
+	valueList[6].valueName = "Scaled 7";
+	valueList[6].expectedValue = 0;
+	valueList[6].actualValue = shouldBe0Two;
+
+	CheckResults(TestName, valueList, 7);
+}
+
+void TestSetValBuffer()
+{
+	std::string TestName = "Test Set Val Buffer";
+
+	ClearVertices();
+	ClearDeviceMemory();
+	ClearInputBuffer();
+	ClearControls();
+	
+	heepByte bufferControl [10];
+
+	SetDeviceName("Test");
+	Control theControl;
+	theControl.controlName = "Test Control";
+	theControl.controlID = 0;
+	theControl.controlDirection = 1;
+	theControl.controlType = 2;
+	theControl.highValue= 10;
+	theControl.controlBuffer = bufferControl;
+	AddControl(theControl);
+
+	ClearInputBuffer();
+	inputBuffer[0] = 0x0A;// OpCode
+	inputBuffer[1] = 0x05;
+	inputBuffer[2] = 0x00; // Destination ID
+	inputBuffer[3] = 0x00; // Source Control Type (Not buffer, should fail)
+	inputBuffer[4] = 0x04; // Source High Val
+	inputBuffer[5] = 0x00; // Source Low Val
+	inputBuffer[6] = 0x03; // Value
+	inputBuffer[7] = 0x05; // Random junk for edge case test
+	ExecuteControlOpCodes();
+
+	int shoudlBeFailureROP = outputBuffer[0];
+
+	ClearInputBuffer();
+	inputBuffer[0] = 0x0A;// OpCode
+	inputBuffer[1] = 12;
+	inputBuffer[2] = 0x00; // Destination ID
+	inputBuffer[3] = 0x02; // Source Control Type
+	for(int i = 0; i < 10; i++)
+	{
+		inputBuffer[i+4] = i;
+	}
+	ExecuteControlOpCodes();
+
+	int shouldBeSuccessROP = outputBuffer[0];
+
+	ExpectedValue valueList[12];
+	valueList[0].valueName = "Returned Op Code";
+	valueList[0].expectedValue = ErrorOpCode;
+	valueList[0].actualValue = shoudlBeFailureROP;
+
+	valueList[1].valueName = "Control Value";
+	valueList[1].expectedValue = SuccessOpCode;
+	valueList[1].actualValue = shouldBeSuccessROP;
+
+	for(int i = 0; i < 10; i++)
+	{
+		valueList[i+2].valueName = std::string("Value ") + std::to_string(i);
+		valueList[i+2].expectedValue = i;
+		valueList[i+2].actualValue = controlList[0].controlBuffer[i];
+	}
+
+	CheckResults(TestName, valueList, 12);
+
+}
+
 void TestActionAndResponseOpCodes()
 {
 	TestClearOutputBufferAndAddChar();
@@ -849,4 +995,6 @@ void TestActionAndResponseOpCodes()
 	CheckSetPositionOverflowHandling();
 	TestWiFiOverflowDetection();
 	TestNameOverflowDetection();
+	TestGetScaledValue();
+	TestSetValBuffer();
 }
